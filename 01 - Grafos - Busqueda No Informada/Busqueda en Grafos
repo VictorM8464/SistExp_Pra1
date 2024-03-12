@@ -1,0 +1,39 @@
+from collections import deque
+
+#Ejemplo de Transporte
+
+class SistemaTransporte:
+    def __init__(self):
+        self.mapa = {
+            'A': ['B', 'C'],
+            'B': ['A', 'D', 'E'],
+            'C': ['A', 'F'],
+            'D': ['B', 'G'],
+            'E': ['B'],
+            'F': ['C'],
+            'G': ['D']
+        }
+
+    def bfs(self, inicio, objetivo):
+        visitado = set()
+        cola = deque()
+        cola.append((inicio, [inicio]))
+
+        while cola:
+            estacion_actual, ruta_actual = cola.popleft()
+            if estacion_actual == objetivo:
+                return ruta_actual
+            if estacion_actual not in visitado:
+                visitado.add(estacion_actual)
+                for vecino in self.mapa[estacion_actual]:
+                    cola.append((vecino, ruta_actual + [vecino]))
+
+        return None
+
+# El programa encuentra el camino más rápido del punto A al G
+sistema = SistemaTransporte()
+ruta = sistema.bfs('A', 'G')
+if ruta:
+    print("Ruta mas corta:", ruta)
+else:
+    print("No se encontro una ruta.")
