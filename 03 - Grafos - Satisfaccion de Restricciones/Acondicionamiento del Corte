@@ -1,0 +1,21 @@
+from constraint import Problem
+
+def optimizacion_corte_tela():
+    # Definir el problema de satisfacción de restricciones
+    problem = Problem()
+
+    # Variables representan los rollos de tela
+    rollos = ['rollo_1', 'rollo_2', 'rollo_3']  # Por ejemplo, tenemos tres rollos de tela
+    problem.addVariables(rollos, range(1, 101))  # Longitud máxima de rollo es de 100 metros
+
+    # Restricciones de demanda para diferentes productos
+    problem.addConstraint(lambda x: x >= 40, ('rollo_1',))  # Demanda para producto A
+    problem.addConstraint(lambda x: x >= 30, ('rollo_2',))  # Demanda para producto B
+    problem.addConstraint(lambda x: x >= 20, ('rollo_3',))  # Demanda para producto C
+
+    # Solucionar el problema
+    soluciones = problem.getSolutions()
+    for solucion in soluciones:
+        print(solucion)
+
+optimizacion_corte_tela()
