@@ -1,0 +1,21 @@
+# Definir las utilidades de los diferentes destinos y factores
+utilidad_playa = {'destino': 'Playa tropical', 'utilidad': 8, 'costo': -2, 'duracion': -1}
+utilidad_ciudad = {'destino': 'Ciudad historica', 'utilidad': 6, 'costo': -1, 'duracion': -2}
+
+# Calcular la utilidad esperada para cada destino
+probabilidad = 0.7  # Probabilidad de que puedas tomar las vacaciones este año
+
+utilidad_esperada_playa = (probabilidad * utilidad_playa['utilidad']) + (probabilidad * utilidad_playa['costo']) + (probabilidad * utilidad_playa['duracion'])
+utilidad_esperada_ciudad = (probabilidad * utilidad_ciudad['utilidad']) + (probabilidad * utilidad_ciudad['costo']) + (probabilidad * utilidad_ciudad['duracion'])
+
+# Mostrar los resultados
+print("Utilidad esperada para la playa tropical:", utilidad_esperada_playa)
+print("Utilidad esperada para la ciudad historica:", utilidad_esperada_ciudad)
+
+# Tomar la decisión basada en la utilidad esperada
+if utilidad_esperada_playa > utilidad_esperada_ciudad:
+    print("La mejor opcion es ir a la playa tropical.")
+elif utilidad_esperada_ciudad > utilidad_esperada_playa:
+    print("La mejor opcion es visitar la ciudad historica.")
+else:
+    print("Ambas opciones tienen la misma utilidad esperada. Puedes elegir cualquiera de las dos.")
