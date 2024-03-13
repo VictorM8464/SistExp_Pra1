@@ -1,0 +1,68 @@
+import heapq
+
+class Grafo:
+    def __init__(self):
+        self.vertices = {}
+
+    def agregar_vertice(self, vertice):
+        if vertice not in self.vertices:
+            self.vertices[vertice] = {}
+
+    def agregar_arista(self, origen, destino, peso):
+        if origen in self.vertices and destino in self.vertices:
+            self.vertices[origen][destino] = peso
+            self.vertices[destino][origen] = peso  # Asumiendo un grafo no dirigido
+
+    def a_estrella(self, inicio, objetivo):
+        # Función heurística: distancia Manhattan
+        def h(nodo):
+            x1, y1 = nodo
+            x2, y2 = objetivo
+            return abs(x1 - x2) + abs(y1 - y2)
+
+        cola_prioridad = []
+        heapq.heappush(cola_prioridad, (0, inicio))  # (f, nodo)
+        visitado = set()
+
+        while cola_prioridad:
+            _, nodo_actual = heapq.heappop(cola_prioridad)
+            if nodo_actual == objetivo:
+                print("Objetivo encontrado:", nodo_actual)
+                return True
+            if nodo_actual not in visitado:
+                print("Explorando:", nodo_actual)
+                visitado.add(nodo_actual)
+                for vecino, peso in self.vertices[nodo_actual].items():
+                    nuevo_costo = h(vecino) + peso
+                    heapq.heappush(cola_prioridad, (nuevo_costo, vecino))
+        print("Objetivo no encontrado")
+        return False
+
+#Los 0 son calles y los 1 son edificios
+mapa = [
+    [0, 0, 0, 1, 0],
+    [0, 1, 0, 1, 0],
+    [0, 0, 0, 0, 0],
+    [1, 1, 0, 0, 0],
+    [0, 0, 0, 1, 0]
+]
+# Definir el grafo basado en el mapa
+grafo = Grafo()
+for i in range(len(mapa)):
+    for j in range(len(mapa[0])):
+        if mapa[i][j] == 0:
+            grafo.agregar_vertice((i, j))
+            # Agregar aristas hacia nodos vecinos
+            if i > 0 and mapa[i - 1][j] == 0:
+                grafo.agregar_arista((i, j), (i - 1, j), 1)
+            if i < len(mapa) - 1 and mapa[i + 1][j] == 0:
+                grafo.agregar_arista((i, j), (i + 1, j), 1)
+            if j > 0 and mapa[i][j - 1] == 0:
+                grafo.agregar_arista((i, j), (i, j - 1), 1)
+            if j < len(mapa[0]) - 1 and mapa[i][j + 1] == 0:
+                grafo.agregar_arista((i, j), (i, j + 1), 1)
+
+# Aplicar el algoritmo A* para encontrar la ruta más corta
+inicio = (0, 0)  # Tu casa
+restaurante = (2, 4)  # Restaurante cercano
+grafo.a_estrella(inicio, restaurante)
