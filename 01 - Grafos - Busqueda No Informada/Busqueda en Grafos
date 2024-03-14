@@ -1,17 +1,15 @@
 from collections import deque
 
-#Ejemplo de Transporte
-
 class SistemaTransporte:
     def __init__(self):
         self.mapa = {
-            'A': ['B', 'C'],
-            'B': ['A', 'D', 'E'],
-            'C': ['A', 'F'],
-            'D': ['B', 'G'],
-            'E': ['B'],
-            'F': ['C'],
-            'G': ['D']
+            'Casa': ['Escuela', 'Parque'],
+            'Escuela': ['Casa', 'Trabajo', 'Centro Comercial'],
+            'Parque': ['Casa', 'Gimnasio'],
+            'Trabajo': ['Escuela', 'Restaurante'],
+            'Centro Comercial': ['Escuela'],
+            'Gimnasio': ['Parque'],
+            'Restaurante': ['Trabajo']
         }
 
     def bfs(self, inicio, objetivo):
@@ -20,20 +18,33 @@ class SistemaTransporte:
         cola.append((inicio, [inicio]))
 
         while cola:
-            estacion_actual, ruta_actual = cola.popleft()
-            if estacion_actual == objetivo:
+            lugar_actual, ruta_actual = cola.popleft()
+            if lugar_actual == objetivo:
                 return ruta_actual
-            if estacion_actual not in visitado:
-                visitado.add(estacion_actual)
-                for vecino in self.mapa[estacion_actual]:
+            if lugar_actual not in visitado:
+                visitado.add(lugar_actual)
+                for vecino in self.mapa[lugar_actual]:
                     cola.append((vecino, ruta_actual + [vecino]))
 
         return None
 
-# El programa encuentra el camino más rápido del punto A al G
+# Instancia de la clase SistemaTransporte
 sistema = SistemaTransporte()
-ruta = sistema.bfs('A', 'G')
+
+# Mostrar opciones disponibles al usuario
+print("Opciones disponibles:")
+for lugar in sistema.mapa.keys():
+    print("-", lugar)
+
+# Pedir al usuario la ubicación inicial y final
+inicio = input("\nDonde estas ahora? ")
+objetivo = input("A donde quieres ir? ")
+
+# Encontrar la ruta más corta
+ruta = sistema.bfs(inicio, objetivo)
+
+# Imprimir la ruta encontrada
 if ruta:
-    print("Ruta mas corta:", ruta)
+    print("La ruta mas corta es:", ruta)
 else:
-    print("No se encontro una ruta.")
+    print("No se encontra una ruta.")
